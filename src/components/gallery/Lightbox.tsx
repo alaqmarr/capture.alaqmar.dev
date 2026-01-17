@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
-import Image from "next/image";
+import { ImageWithLoader as Image } from "@/components/ui/ImageWithLoader";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "@/components/icons";
 import styles from "./Lightbox.module.css";
 

@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { PhotoGrid } from "@/components/gallery/PhotoGrid";
 import { CalendarIcon, ArrowLeftIcon, GoogleDriveIcon } from "@/components/icons";
 import Link from "next/link";
-import Image from "next/image";
+import { ImageWithLoader as Image } from "@/components/ui/ImageWithLoader";
 import styles from "./page.module.css";
 
 export const preferredRegion = "sin1";

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { db } from "@/lib/db";
 import styles from "./page.module.css";
 import Link from "next/link";
-import Image from "next/image";
+import { ImageWithLoader as Image } from "@/components/ui/ImageWithLoader";
 import { ArrowRightIcon } from "@/components/icons";
 
 export const preferredRegion = "sin1";

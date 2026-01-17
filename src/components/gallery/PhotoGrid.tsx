@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { ImageWithLoader as Image } from "@/components/ui/ImageWithLoader";
 import styles from "./PhotoGrid.module.css";
 import { Lightbox } from "./Lightbox";
 

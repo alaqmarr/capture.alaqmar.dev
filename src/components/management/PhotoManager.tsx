@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { ImageWithLoader as Image } from "@/components/ui/ImageWithLoader";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Toast";
 import { ArrowLeftIcon, TrashIcon, UploadIcon, XIcon, CheckIcon, ImageIcon, EditIcon } from "@/components/icons";

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
-import Image from "next/image";
+import { ImageWithLoader as Image } from "@/components/ui/ImageWithLoader";
 import Link from "next/link";
 import { PhotoGrid } from "@/components/gallery/PhotoGrid";
 import { ArrowLeftIcon, GoogleDriveIcon } from "@/components/icons";
