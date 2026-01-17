@@ -7,11 +7,11 @@
    CSS Custom Properties (Design Tokens)
    ----------------------------------------------------------------------------- */
 :root {
-  /* Colors - Dark Moody Palette */
-  --color-bg-primary: #0a0a0a;
-  --color-bg-secondary: #111111;
-  --color-bg-tertiary: #1a1a1a;
-  --color-bg-card: #141414;
+  /* Colors - Dark Moody Palette with subtle warmth */
+  --color-bg-primary: #0c0c0c;
+  --color-bg-secondary: #121214;
+  --color-bg-tertiary: #1a1a1e;
+  --color-bg-card: #151518;
   --color-bg-elevated: #1f1f1f;
   
   --color-border: #2a2a2a;
@@ -30,6 +30,10 @@
   --color-success: #4ade80;
   --color-error: #ef4444;
   --color-warning: #f59e0b;
+  
+  /* Secondary accent - cool teal for gradient contrast */
+  --color-accent-cool: #4a9e8c;
+  --color-accent-cool-dim: rgba(74, 158, 140, 0.1);
   
   /* Typography - Mobile First Base Sizes */
   --font-heading: 'Space Grotesk', sans-serif;
@@ -91,7 +95,14 @@
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 40px rgba(201, 169, 98, 0.15);
+  --shadow-glow: 0 0 40px rgba(201, 169, 98, 0.2);
+  
+  /* Gradients */
+  --gradient-page: linear-gradient(180deg, #0c0c0c 0%, #0f0f12 50%, #0a0a0e 100%);
+  --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+  --gradient-accent: linear-gradient(135deg, rgba(201, 169, 98, 0.08) 0%, rgba(201, 169, 98, 0.02) 100%);
+  --gradient-glow: radial-gradient(ellipse at center, rgba(201, 169, 98, 0.12) 0%, transparent 70%);
+  --gradient-atmosphere: linear-gradient(135deg, rgba(74, 158, 140, 0.06) 0%, transparent 40%, rgba(201, 169, 98, 0.08) 100%);
   
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -120,7 +131,8 @@ body {
   font-size: var(--text-base);
   line-height: 1.6;
   color: var(--color-text-primary);
-  background-color: var(--color-bg-primary);
+  background: var(--gradient-page);
+  background-attachment: fixed;
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;

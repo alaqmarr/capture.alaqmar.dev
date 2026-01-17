@@ -8,6 +8,7 @@ export function HeroSection() {
             <div className={styles.background}>
                 <div className={styles.gradient1}></div>
                 <div className={styles.gradient2}></div>
+                <div className={styles.gradient3}></div>
                 <div className={styles.noiseOverlay}></div>
             </div>
 

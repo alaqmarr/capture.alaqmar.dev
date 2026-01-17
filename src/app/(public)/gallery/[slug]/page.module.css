@@ -27,7 +27,23 @@
 .page {
   min-height: 100vh;
   padding-top: 80px;
-  background-color: var(--color-bg-primary);
+  background-color: #0a0a0c;
+  position: relative;
+}
+
+.page::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(74, 158, 140, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(201, 169, 98, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(180, 140, 80, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Hero Section with Thumbnail Background */
@@ -130,11 +146,15 @@
 
 .photosSection {
   padding: var(--space-12) var(--container-padding);
+  position: relative;
+  z-index: 1;
 }
 
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 768px) {

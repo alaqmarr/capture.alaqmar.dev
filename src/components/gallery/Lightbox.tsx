@@ -77,13 +77,11 @@ export function Lightbox({
 
                 {/* Image Container */}
                 <div className={styles.imageContainer} onClick={onClose}>
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                         src={currentPhoto.url}
                         alt={currentPhoto.title || "Photo"}
                         className={styles.image}
-                        priority
-                        // Removing fill prop to let CSS control natural sizing + containment
-                        style={{ width: "auto", height: "auto", maxHeight: "100%", maxWidth: "100%" }}
                     />
                 </div>
 
