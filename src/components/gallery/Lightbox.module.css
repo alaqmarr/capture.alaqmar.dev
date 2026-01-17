@@ -24,116 +24,135 @@
   justify-content: center;
 }
 
+/* Controls Layer - higher z-index than image */
+.controlsLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none; /* Let clicks pass through to overlay/image where not on buttons */
+}
+
 .closeBtn {
   position: absolute;
-  top: var(--space-4);
-  right: var(--space-4);
-  z-index: 10;
+  top: 20px;
+  right: 20px;
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-full);
   color: var(--color-text-primary);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  pointer-events: auto;
+  transition: all 0.2s ease;
 }
 
 .closeBtn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.closeBtn svg {
-  width: 24px;
-  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
 }
 
 .navBtn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 56px;
   height: 56px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-full);
   color: var(--color-text-primary);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  pointer-events: auto;
+  transition: all 0.2s ease;
 }
 
 .navBtn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.navBtn svg {
-  width: 28px;
-  height: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .prevBtn {
-  left: var(--space-4);
+  left: 20px;
 }
 
 .nextBtn {
-  right: var(--space-4);
+  right: 20px;
 }
 
 .imageContainer {
-  position: relative;
-  width: calc(100% - 160px);
-  height: calc(100% - 120px);
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 40px; /* Safe area around image */
+  z-index: 10;
 }
 
+/* Ensure the image fits within the container without cropping */
 .image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto !important;
+  height: auto !important;
   object-fit: contain;
 }
 
 .footer {
   position: absolute;
-  bottom: var(--space-6);
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 30;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
+  pointer-events: none;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
 .title {
-  font-size: var(--text-base);
-  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  color: #fff;
   font-weight: 500;
+  margin: 0;
 }
 
 .counter {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
 }
 
 @media (max-width: 768px) {
   .navBtn {
     width: 44px;
     height: 44px;
+    background: transparent;
+    border: none;
   }
+  
+  .prevBtn { left: 10px; }
+  .nextBtn { right: 10px; }
 
-  .navBtn svg {
-    width: 24px;
-    height: 24px;
+  .closeBtn {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
   }
 
   .imageContainer {
-    width: 100%;
-    height: calc(100% - 140px);
+    padding: 0;
   }
 }

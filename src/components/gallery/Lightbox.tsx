@@ -53,36 +53,39 @@ export function Lightbox({
     return (
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.content} onClick={(e) => e.stopPropagation()}>
+
+                {/* Controls */}
                 <button className={styles.closeBtn} onClick={onClose} aria-label="Close">
                     <XIcon />
                 </button>
 
                 <button
                     className={`${styles.navBtn} ${styles.prevBtn}`}
-                    onClick={handlePrev}
+                    onClick={(e) => { e.stopPropagation(); handlePrev(); }}
                     aria-label="Previous photo"
                 >
                     <ChevronLeftIcon />
                 </button>
 
-                <div className={styles.imageContainer}>
-                    <Image
-                        src={currentPhoto.url}
-                        alt={currentPhoto.title || "Photo"}
-                        fill
-                        sizes="100vw"
-                        className={styles.image}
-                        priority
-                    />
-                </div>
-
                 <button
                     className={`${styles.navBtn} ${styles.nextBtn}`}
-                    onClick={handleNext}
+                    onClick={(e) => { e.stopPropagation(); handleNext(); }}
                     aria-label="Next photo"
                 >
                     <ChevronRightIcon />
                 </button>
+
+                {/* Image Container */}
+                <div className={styles.imageContainer} onClick={onClose}>
+                    <Image
+                        src={currentPhoto.url}
+                        alt={currentPhoto.title || "Photo"}
+                        className={styles.image}
+                        priority
+                        // Removing fill prop to let CSS control natural sizing + containment
+                        style={{ width: "auto", height: "auto", maxHeight: "100%", maxWidth: "100%" }}
+                    />
+                </div>
 
                 <div className={styles.footer}>
                     {currentPhoto.title && (
