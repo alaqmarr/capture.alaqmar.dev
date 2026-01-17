@@ -1,0 +1,154 @@
+/* Google Drive Button */
+.driveButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  background-color: #2D3748;
+  color: white;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  text-decoration: none;
+  margin-top: var(--space-6);
+  transition: all var(--transition-fast);
+  border: 1px solid var(--color-border);
+}
+
+.driveButton:hover {
+  background-color: #4A5568;
+  transform: translateY(-1px);
+}
+
+.driveIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.page {
+  min-height: 100vh;
+  padding-top: 80px;
+  background-color: var(--color-bg-primary);
+}
+
+/* Hero Section with Thumbnail Background */
+.hero {
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-12) var(--container-padding);
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.heroBgImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 1) 0%,
+    rgba(10, 10, 10, 0.85) 30%,
+    rgba(10, 10, 10, 0.5) 60%,
+    rgba(212, 175, 55, 0.05) 100%
+  );
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  margin-bottom: var(--space-6);
+  transition: color var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--color-accent);
+}
+
+.backIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-4);
+  line-height: 1.1;
+}
+
+.description {
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: var(--space-6);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.metaIcon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-accent);
+}
+
+.photosSection {
+  padding: var(--space-12) var(--container-padding);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 40vh;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
+  .backLink {
+    margin-bottom: var(--space-4);
+  }
+
+  .meta {
+    gap: var(--space-4);
+  }
+}

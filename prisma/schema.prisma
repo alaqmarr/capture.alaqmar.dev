@@ -1,0 +1,86 @@
+generator client {
+  provider        = "prisma-client"
+  output = "../src/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Storage providers for photos
+enum StorageProvider {
+  AWS_S3
+  FIREBASE
+  CLOUDINARY
+  CLOUDFLARE_R2
+}
+
+model Event {
+  id              String          @id @default(cuid())
+  title           String
+  description     String?
+  slug            String          @unique
+  googleDriveUrl  String?         // Link to full album on Google Drive
+  coverImage      String?         // Legacy field, use thumbnail instead
+  thumbnail       String?         // Thumbnail URL (always stored on S3)
+  thumbnailKey    String?         // S3 key for thumbnail
+  eventDate       DateTime?
+  isPublished     Boolean         @default(true)
+  isLive          Boolean         @default(false) // Live event coverage
+  liveStartedAt   DateTime?       // When live coverage started
+  liveEndedAt     DateTime?       // When live coverage ended (auto moves to gallery)
+  storageProvider StorageProvider @default(AWS_S3) // Where photos are stored
+  photos          Photo[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([slug])
+  @@index([isLive])
+  @@index([isPublished])
+  @@index([createdAt])
+}
+
+model Photo {
+  id              String          @id @default(cuid())
+  eventId         String
+  event           Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  url             String          // Public URL (unified across all providers)
+  storageKey      String          // Provider-specific key/path
+  storageProvider StorageProvider @default(AWS_S3) // Individual photo storage (inherits from event)
+  title           String?
+  order           Int             @default(0)
+  width           Int?
+  height          Int?
+  createdAt       DateTime        @default(now())
+
+  @@index([eventId])
+  @@index([order])
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+model ErrorLog {
+  id        String   @id @default(cuid())
+  message   String
+  stack     String?
+  context   String?
+  endpoint  String?
+  method    String?
+  userId    String?
+  severity  String   @default("error") // error, warning, info
+  createdAt DateTime @default(now())
+
+  @@index([severity])
+  @@index([createdAt])
+}
