@@ -26,21 +26,15 @@ export function ImageWithLoader({
     style,
     ...props
 }: ImageWithLoaderProps) {
-    const [isLoading, setIsLoading] = useState(true);
+    // Removed loading state to show browser's native progressive loading immediately
 
     return (
         <div className={`${styles.container} ${fill ? styles.fill : ""} ${className}`}>
-            {isLoading && (
-                <div className={styles.loaderContainer}>
-                    <div className={styles.spinner}></div>
-                </div>
-            )}
             <img
                 src={src}
                 alt={alt}
                 loading={priority ? "eager" : "lazy"}
-                className={`${styles.image} ${isLoading ? styles.loading : styles.loaded}`}
-                onLoad={() => setIsLoading(false)}
+                className={`${styles.image}`}
                 style={{
                     position: fill ? "absolute" : "static",
                     width: fill ? "100%" : props.width,
