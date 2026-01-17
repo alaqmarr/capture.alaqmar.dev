@@ -113,6 +113,29 @@
     margin-left: 0.5rem;
 }
 
+.storageBadge {
+    display: inline-block;
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.563rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+    border: 1px solid var(--color-border);
+}
+
+.draftBadge {
+    display: inline-block;
+    background-color: rgba(156, 163, 175, 0.2);
+    color: #9ca3af;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.563rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
 .arrow {
     color: var(--color-text-muted);
     font-size: 1rem;
@@ -138,6 +161,37 @@
 }
 
 .endLiveBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.eventActions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.deleteBtn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.deleteBtn:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+}
+
+.deleteBtn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }

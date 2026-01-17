@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { StorageUsage } from "./StorageUsage";
 import styles from "./page.module.css";
 
 export const preferredRegion = "sin1";
@@ -37,10 +38,13 @@ export default async function DashboardPage() {
                 ))}
             </div>
 
+            {/* Storage Usage Section */}
+            <StorageUsage />
+
             <section className={styles.quickActions}>
                 <h2 className={styles.sectionTitle}>Quick Actions</h2>
                 <div className={styles.actionsGrid}>
-                    <a href="/dashboard/events" className={styles.actionCard}>
+                    <a href="/dashboard/events/new" className={styles.actionCard}>
                         <span className={styles.actionIcon}>➕</span>
                         <span>Create Event</span>
                     </a>

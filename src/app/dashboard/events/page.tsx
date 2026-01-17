@@ -1,9 +1,17 @@
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { EndLiveButton } from "./EndLiveButton";
+import { DeleteEventButton } from "./DeleteEventButton";
 import styles from "./page.module.css";
 
 export const preferredRegion = "sin1";
+
+const STORAGE_LABELS: Record<string, string> = {
+    AWS_S3: "S3",
+    FIREBASE: "Firebase",
+    CLOUDINARY: "Cloudinary",
+    CLOUDFLARE_R2: "R2",
+};
 
 export default async function EventsPage() {
     const events = await db.event.findMany({
@@ -40,16 +48,22 @@ export default async function EventsPage() {
                                 <div className={styles.eventInfo}>
                                     <h3 className={styles.eventTitle}>{event.title}</h3>
                                     <p className={styles.eventMeta}>
-                                        {event._count.photos} photos •
+                                        {event._count.photos} photos
+                                        <span className={styles.storageBadge}>
+                                            {STORAGE_LABELS[event.storageProvider] || event.storageProvider}
+                                        </span>
                                         {event.isLive && <span className={styles.liveBadge}>LIVE</span>}
-                                        {event.isPublished ? " Published" : " Draft"}
+                                        {!event.isPublished && <span className={styles.draftBadge}>Draft</span>}
                                     </p>
                                 </div>
                                 <span className={styles.arrow}>→</span>
                             </Link>
-                            {event.isLive && (
-                                <EndLiveButton eventId={event.id} />
-                            )}
+                            <div className={styles.eventActions}>
+                                {event.isLive && (
+                                    <EndLiveButton eventId={event.id} />
+                                )}
+                                <DeleteEventButton eventId={event.id} eventTitle={event.title} />
+                            </div>
                         </div>
                     ))
                 )}
@@ -57,3 +71,4 @@ export default async function EventsPage() {
         </div>
     );
 }
+
