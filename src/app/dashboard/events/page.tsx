@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import Link from "next/link";
+import { EndLiveButton } from "./EndLiveButton";
 import styles from "./page.module.css";
 
 export const preferredRegion = "sin1";
@@ -31,21 +32,25 @@ export default async function EventsPage() {
                     </div>
                 ) : (
                     events.map((event) => (
-                        <Link
-                            key={event.id}
-                            href={`/dashboard/events/${event.id}`}
-                            className={styles.eventCard}
-                        >
-                            <div className={styles.eventInfo}>
-                                <h3 className={styles.eventTitle}>{event.title}</h3>
-                                <p className={styles.eventMeta}>
-                                    {event._count.photos} photos •
-                                    {event.isLive && <span className={styles.liveBadge}>LIVE</span>}
-                                    {event.isPublished ? " Published" : " Draft"}
-                                </p>
-                            </div>
-                            <span className={styles.arrow}>→</span>
-                        </Link>
+                        <div key={event.id} className={styles.eventCard}>
+                            <Link
+                                href={`/dashboard/events/${event.id}`}
+                                className={styles.eventLink}
+                            >
+                                <div className={styles.eventInfo}>
+                                    <h3 className={styles.eventTitle}>{event.title}</h3>
+                                    <p className={styles.eventMeta}>
+                                        {event._count.photos} photos •
+                                        {event.isLive && <span className={styles.liveBadge}>LIVE</span>}
+                                        {event.isPublished ? " Published" : " Draft"}
+                                    </p>
+                                </div>
+                                <span className={styles.arrow}>→</span>
+                            </Link>
+                            {event.isLive && (
+                                <EndLiveButton eventId={event.id} />
+                            )}
+                        </div>
                     ))
                 )}
             </div>
