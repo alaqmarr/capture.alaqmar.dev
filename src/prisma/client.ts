@@ -59,3 +59,18 @@ export type ContactSubmission = Prisma.ContactSubmissionModel
  * 
  */
 export type ErrorLog = Prisma.ErrorLogModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Subscriber
+ * 
+ */
+export type Subscriber = Prisma.SubscriberModel
+/**
+ * Model Newsletter
+ * 
+ */
+export type Newsletter = Prisma.NewsletterModel

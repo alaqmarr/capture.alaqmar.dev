@@ -1,8 +1,10 @@
+import { auth, signOut } from "@/auth";
 import Link from "next/link";
 import styles from "./Footer.module.css";
 import { InstagramIcon, MailIcon, PhoneIcon, MapPinIcon } from "@/components/icons";
 
-export function Footer() {
+export async function Footer() {
+    const session = await auth();
     const currentYear = new Date().getFullYear();
 
     return (
@@ -29,6 +31,9 @@ export function Footer() {
                             <li><Link href="/" className={styles.link}>Home</Link></li>
                             <li><Link href="/gallery" className={styles.link}>Gallery</Link></li>
                             <li><Link href="/contact" className={styles.link}>Contact</Link></li>
+                            {session && (
+                                <li><Link href="/manage_my_portfolio" className={styles.link}>Manage</Link></li>
+                            )}
                         </ul>
                     </div>
 
@@ -65,6 +70,19 @@ export function Footer() {
                                 <InstagramIcon />
                             </a>
                         </div>
+                        {session && (
+                            <form
+                                action={async () => {
+                                    "use server";
+                                    await signOut();
+                                }}
+                                className={styles.logoutForm}
+                            >
+                                <button type="submit" className={styles.logoutBtn}>
+                                    Sign Out
+                                </button>
+                            </form>
+                        )}
                     </div>
                 </div>
 

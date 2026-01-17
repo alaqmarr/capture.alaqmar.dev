@@ -54,7 +54,10 @@ export const ModelName = {
   Event: 'Event',
   Photo: 'Photo',
   ContactSubmission: 'ContactSubmission',
-  ErrorLog: 'ErrorLog'
+  ErrorLog: 'ErrorLog',
+  User: 'User',
+  Subscriber: 'Subscriber',
+  Newsletter: 'Newsletter'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -137,6 +140,41 @@ export const ErrorLogScalarFieldEnum = {
 } as const
 
 export type ErrorLogScalarFieldEnum = (typeof ErrorLogScalarFieldEnum)[keyof typeof ErrorLogScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SubscriberScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  name: 'name',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+} as const
+
+export type SubscriberScalarFieldEnum = (typeof SubscriberScalarFieldEnum)[keyof typeof SubscriberScalarFieldEnum]
+
+
+export const NewsletterScalarFieldEnum = {
+  id: 'id',
+  subject: 'subject',
+  content: 'content',
+  sentAt: 'sentAt',
+  sentCount: 'sentCount',
+  createdAt: 'createdAt'
+} as const
+
+export type NewsletterScalarFieldEnum = (typeof NewsletterScalarFieldEnum)[keyof typeof NewsletterScalarFieldEnum]
 
 
 export const SortOrder = {

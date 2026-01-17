@@ -217,3 +217,96 @@ export function enquiryEmailTemplate(data: {
 
   return baseTemplate(content);
 }
+
+// Login alert email for admin
+export function loginAlertTemplate(data: {
+  name: string;
+  email: string;
+  ip?: string;
+}): string {
+  const content = `
+    <h2 style="margin: 0 0 24px; color: #ffffff; font-size: 22px; font-weight: 600;">
+      🔐 Login Alert
+    </h2>
+    
+    <p style="margin: 0 0 20px; color: #cccccc; font-size: 16px; line-height: 1.7;">
+      A successful login was detected on your AL AQMAR Photography account.
+    </p>
+    
+    <div style="background-color: #0a0a0a; border: 1px solid #262626; border-radius: 8px; padding: 16px; margin: 24px 0;">
+      <p style="margin: 0 0 8px; color: #888888; font-size: 12px;">Account</p>
+      <p style="margin: 0; color: #ffffff; font-size: 14px;">${data.name} (${data.email})</p>
+    </div>
+    
+    <p style="margin: 0; color: #888888; font-size: 13px;">
+      Time: ${new Date().toLocaleString("en-IN", { dateStyle: "full", timeStyle: "short" })}
+    </p>
+    
+    <p style="margin: 24px 0 0; color: #cccccc; font-size: 14px; line-height: 1.6;">
+      If this wasn't you, please secure your account immediately.
+    </p>
+  `;
+
+  return baseTemplate(content);
+}
+
+// Account creation welcome email
+export function accountCreatedTemplate(name: string): string {
+  const content = `
+    <h2 style="margin: 0 0 24px; color: #ffffff; font-size: 24px; font-weight: 600;">
+      Welcome, ${name}! 🎉
+    </h2>
+    
+    <p style="margin: 0 0 20px; color: #cccccc; font-size: 16px; line-height: 1.7;">
+      Your admin account for AL AQMAR Photography has been created successfully.
+    </p>
+    
+    <div style="background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%); border-left: 3px solid #d4af37; padding: 20px; border-radius: 0 8px 8px 0; margin: 24px 0;">
+      <p style="margin: 0; color: #d4af37; font-size: 14px; font-weight: 500;">
+        What you can do now:
+      </p>
+      <ul style="margin: 12px 0 0; padding-left: 20px; color: #bbbbbb; font-size: 14px; line-height: 1.8;">
+        <li>Create and manage photography events</li>
+        <li>Upload photos and organize galleries</li>
+        <li>View contact submissions</li>
+        <li>Send newsletters to subscribers</li>
+      </ul>
+    </div>
+    
+    <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 32px 0 0;">
+      <tr>
+        <td style="background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%); border-radius: 8px;">
+          <a href="${process.env.NEXT_PUBLIC_SITE_URL || "https://alaqmar.com"}/dashboard" style="display: inline-block; padding: 14px 28px; color: #0a0a0a; text-decoration: none; font-size: 14px; font-weight: 600;">
+            Go to Dashboard →
+          </a>
+        </td>
+      </tr>
+    </table>
+  `;
+
+  return baseTemplate(content);
+}
+
+// Event created notification
+export function eventCreatedTemplate(eventTitle: string): string {
+  const content = `
+    <h2 style="margin: 0 0 24px; color: #ffffff; font-size: 22px; font-weight: 600;">
+      📸 Event Created
+    </h2>
+    
+    <p style="margin: 0 0 20px; color: #cccccc; font-size: 16px; line-height: 1.7;">
+      A new event has been created in your portfolio.
+    </p>
+    
+    <div style="background-color: #0a0a0a; border: 1px solid #262626; border-radius: 8px; padding: 20px; margin: 24px 0;">
+      <p style="margin: 0 0 8px; color: #888888; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;">Event Name</p>
+      <p style="margin: 0; color: #ffffff; font-size: 18px; font-weight: 600;">${eventTitle}</p>
+    </div>
+    
+    <p style="margin: 0; color: #888888; font-size: 13px;">
+      Created on ${new Date().toLocaleString("en-IN", { dateStyle: "full", timeStyle: "short" })}
+    </p>
+  `;
+
+  return baseTemplate(content);
+}

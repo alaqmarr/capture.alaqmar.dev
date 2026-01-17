@@ -84,3 +84,36 @@ model ErrorLog {
   @@index([severity])
   @@index([createdAt])
 }
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   // Hashed with bcryptjs
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([isActive])
+}
+
+model Newsletter {
+  id        String    @id @default(cuid())
+  subject   String
+  content   String    // HTML content
+  sentAt    DateTime?
+  sentCount Int       @default(0)
+  createdAt DateTime  @default(now())
+
+  @@index([sentAt])
+}

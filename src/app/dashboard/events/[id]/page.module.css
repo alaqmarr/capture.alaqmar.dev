@@ -1,0 +1,68 @@
+.page {
+    max-width: 1200px;
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.backLink {
+    display: inline-block;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    transition: color 0.2s ease;
+}
+
+.backLink:hover {
+    color: var(--color-accent);
+}
+
+.headerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.badges {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.liveBadge {
+    display: inline-block;
+    background-color: #ef4444;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+}
+
+.publishedBadge {
+    display: inline-block;
+    background-color: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+}
+
+.draftBadge {
+    display: inline-block;
+    background-color: rgba(156, 163, 175, 0.2);
+    color: #9ca3af;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+}
