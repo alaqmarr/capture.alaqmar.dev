@@ -119,89 +119,101 @@ export function PhotoManager({ eventId }: PhotoManagerProps) {
         if (!event || uploads.length === 0) return;
         setIsUploading(true);
 
-        // Determine starting numbering based on existing photos
-        // If photos have "Order" we could use that, but simple count is safer for now
-        let currentIndex = photos.length + 1;
+        // 1. Pre-calculate all metadata to ensure correct sorting order
+        // regardless of which upload finishes first
+        const pendingUploads = uploads.filter(u => u.status !== "success");
+        if (pendingUploads.length === 0) {
+            setIsUploading(false);
+            return;
+        }
 
-        for (const upload of uploads) {
-            if (upload.status === "success") continue;
+        const safeTitle = event.title.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
+        let startIndex = photos.length + 1;
 
-            try {
-                // Generate nice names
-                const ext = upload.file.name.split(".").pop() || "jpg";
-                const safeTitle = event.title.replace(/[^a-zA-Z0-9]/g, "-").toLowerCase();
-                const paddedIndex = currentIndex.toString().padStart(3, "0");
+        // Prepare queue with predetermined names
+        const uploadQueue = pendingUploads.map((item, index) => {
+            const ext = item.file.name.split(".").pop() || "jpg";
+            const paddedIndex = (startIndex + index).toString().padStart(3, "0");
 
-                const niceFilename = `${safeTitle}-${paddedIndex}.${ext}`;
-                const niceTitle = `${event.title} - ${paddedIndex}`;
+            return {
+                ...item,
+                targetFilename: `${safeTitle}-${paddedIndex}.${ext}`,
+                targetTitle: `${event.title} - ${paddedIndex}`,
+                dimensions: { width: 0, height: 0 } // placeholder
+            };
+        });
 
-                currentIndex++; // Increment for next file
+        // 2. Process in batches (Concurrency Limit: 3)
+        // We use a small concurrency to avoid overwhelming the browser network stack
+        const BATCH_SIZE = 3;
 
-                setUploads((prev) =>
-                    prev.map((u) => (u.id === upload.id ? { ...u, status: "uploading", progress: 20 } : u))
-                );
+        for (let i = 0; i < uploadQueue.length; i += BATCH_SIZE) {
+            const batch = uploadQueue.slice(i, i + BATCH_SIZE);
 
-                const presignRes = await fetch("/api/photos/presigned-url", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        files: [{ filename: niceFilename, contentType: upload.file.type }],
-                        storageProvider: event.storageProvider,
-                    }),
-                });
+            await Promise.all(batch.map(async (task) => {
+                try {
+                    // Update status to uploading
+                    setUploads(prev => prev.map(u => u.id === task.id ? { ...u, status: "uploading", progress: 10 } : u));
 
-                if (!presignRes.ok) throw new Error("Failed to get upload URL");
-                const { urls } = await presignRes.json();
+                    // A. Get Presigned URL
+                    const presignRes = await fetch("/api/photos/presigned-url", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            files: [{ filename: task.targetFilename, contentType: task.file.type }],
+                            storageProvider: event.storageProvider,
+                        }),
+                    });
 
-                setUploads((prev) =>
-                    prev.map((u) => (u.id === upload.id ? { ...u, progress: 50 } : u))
-                );
+                    if (!presignRes.ok) throw new Error("Failed to get upload URL");
+                    const { urls } = await presignRes.json();
 
-                await fetch(urls[0].uploadUrl, {
-                    method: "PUT",
-                    body: upload.file,
-                    headers: { "Content-Type": upload.file.type },
-                });
+                    setUploads(prev => prev.map(u => u.id === task.id ? { ...u, progress: 40 } : u));
 
-                setUploads((prev) =>
-                    prev.map((u) => (u.id === upload.id ? { ...u, progress: 80 } : u))
-                );
+                    // B. Upload File to Storage
+                    const uploadRes = await fetch(urls[0].uploadUrl, {
+                        method: "PUT",
+                        body: task.file,
+                        headers: { "Content-Type": task.file.type },
+                    });
 
-                const dims = await getImageDimensions(upload.file);
-                const saveRes = await fetch("/api/photos", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        eventId: event.id,
-                        url: urls[0].publicUrl,
-                        storageKey: urls[0].key,
-                        storageProvider: event.storageProvider,
-                        title: niceTitle,
-                        width: dims.width,
-                        height: dims.height,
-                    }),
-                });
+                    if (!uploadRes.ok) throw new Error("Storage upload failed");
 
-                if (saveRes.ok) {
+                    setUploads(prev => prev.map(u => u.id === task.id ? { ...u, progress: 80 } : u));
+
+                    // C. Get Dimensions & Save to DB
+                    const dims = await getImageDimensions(task.file);
+
+                    const saveRes = await fetch("/api/photos", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            eventId: event.id,
+                            url: urls[0].publicUrl,
+                            storageKey: urls[0].key,
+                            storageProvider: event.storageProvider,
+                            title: task.targetTitle, // Pre-determined title ensures order
+                            width: dims.width,
+                            height: dims.height,
+                        }),
+                    });
+
+                    if (!saveRes.ok) throw new Error("Database save failed");
                     const savedPhoto = await saveRes.json();
-                    setPhotos((prev) => [savedPhoto, ...prev]);
-                    setUploads((prev) =>
-                        prev.map((u) => (u.id === upload.id ? { ...u, status: "success", progress: 100 } : u))
-                    );
-                } else {
-                    throw new Error("Failed to save");
+
+                    // D. Success
+                    setPhotos(prev => [savedPhoto, ...prev]);
+                    setUploads(prev => prev.map(u => u.id === task.id ? { ...u, status: "success", progress: 100 } : u));
+
+                } catch (error) {
+                    console.error("Upload error for", task.file.name, error);
+                    setUploads(prev => prev.map(u => u.id === task.id ? { ...u, status: "error", error: "Failed" } : u));
                 }
-            } catch {
-                setUploads((prev) =>
-                    prev.map((u) =>
-                        u.id === upload.id ? { ...u, status: "error", error: "Upload failed" } : u
-                    )
-                );
-            }
+            }));
         }
 
         setIsUploading(false);
-        showToast("success", "Upload complete");
+        showToast("success", "Batch upload complete");
     };
 
     const getImageDimensions = (file: File): Promise<{ width: number; height: number }> => {
