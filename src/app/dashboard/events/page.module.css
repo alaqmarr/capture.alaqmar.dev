@@ -1,16 +1,17 @@
+/* Mobile-first: Base styles */
 .page {
-    max-width: 1000px;
+    width: 100%;
 }
 
 .header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 2rem;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-text-primary);
     margin-bottom: 0.25rem;
@@ -18,12 +19,13 @@
 
 .subtitle {
     color: var(--color-text-muted);
-    font-size: 0.875rem;
+    font-size: 0.813rem;
 }
 
 .createBtn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
     background: linear-gradient(135deg, var(--color-accent) 0%, #b8962e 100%);
@@ -33,6 +35,7 @@
     font-weight: 600;
     font-size: 0.875rem;
     transition: transform 0.2s ease;
+    width: 100%;
 }
 
 .createBtn:hover {
@@ -46,19 +49,20 @@
 }
 
 .empty {
-    padding: 3rem;
+    padding: 2rem 1rem;
     text-align: center;
     background-color: var(--color-surface);
     border: 1px dashed var(--color-border);
     border-radius: 0.75rem;
     color: var(--color-text-muted);
+    font-size: 0.875rem;
 }
 
 .eventCard {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem;
+    padding: 1rem;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 0.75rem;
@@ -68,22 +72,25 @@
 
 .eventCard:hover {
     border-color: var(--color-accent);
-    transform: translateX(4px);
 }
 
 .eventInfo {
     flex: 1;
+    min-width: 0;
 }
 
 .eventTitle {
-    font-size: 1rem;
+    font-size: 0.938rem;
     font-weight: 600;
     color: var(--color-text-primary);
     margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .eventMeta {
-    font-size: 0.75rem;
+    font-size: 0.688rem;
     color: var(--color-text-muted);
 }
 
@@ -93,12 +100,64 @@
     color: white;
     padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
-    font-size: 0.625rem;
+    font-size: 0.563rem;
     font-weight: 700;
     margin-left: 0.5rem;
 }
 
 .arrow {
     color: var(--color-text-muted);
-    font-size: 1.25rem;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+}
+
+/* Desktop (768px and up) */
+@media (min-width: 768px) {
+    .page {
+        max-width: 1000px;
+    }
+
+    .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+    }
+
+    .createBtn {
+        width: auto;
+    }
+
+    .eventsList {
+        gap: 0.75rem;
+    }
+
+    .empty {
+        padding: 3rem;
+    }
+
+    .eventCard {
+        padding: 1.25rem;
+    }
+
+    .eventCard:hover {
+        transform: translateX(4px);
+    }
+
+    .eventTitle {
+        font-size: 1rem;
+    }
+
+    .eventMeta {
+        font-size: 0.75rem;
+    }
+
+    .liveBadge {
+        font-size: 0.625rem;
+    }
+
+    .arrow {
+        font-size: 1.25rem;
+    }
 }

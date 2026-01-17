@@ -1,8 +1,8 @@
-import { auth, signOut } from "@/auth";
-import Link from "next/link";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { DashboardNav } from "@/components/dashboard/DashboardNav";
 import styles from "./layout.module.css";
-
+export const preferredRegion = "sin1";
 export default async function DashboardLayout({
     children,
 }: {
@@ -16,56 +16,7 @@ export default async function DashboardLayout({
 
     return (
         <div className={styles.dashboard}>
-            <aside className={styles.sidebar}>
-                <div className={styles.sidebarHeader}>
-                    <Link href="/" className={styles.logo}>
-                        <span className={styles.logoAccent}>AL</span>
-                        <span className={styles.logoDot}></span>
-                        <span>AQMAR</span>
-                    </Link>
-                    <p className={styles.sidebarSubtitle}>Dashboard</p>
-                </div>
-
-                <nav className={styles.nav}>
-                    <Link href="/dashboard" className={styles.navLink}>
-                        <span className={styles.navIcon}>📊</span>
-                        Overview
-                    </Link>
-                    <Link href="/dashboard/events" className={styles.navLink}>
-                        <span className={styles.navIcon}>📸</span>
-                        Events
-                    </Link>
-                    <Link href="/dashboard/emails" className={styles.navLink}>
-                        <span className={styles.navIcon}>✉️</span>
-                        Newsletters
-                    </Link>
-                    <Link href="/dashboard/contacts" className={styles.navLink}>
-                        <span className={styles.navIcon}>💬</span>
-                        Contacts
-                    </Link>
-                    <Link href="/dashboard/settings" className={styles.navLink}>
-                        <span className={styles.navIcon}>⚙️</span>
-                        Settings
-                    </Link>
-                </nav>
-
-                <div className={styles.sidebarFooter}>
-                    <p className={styles.userInfo}>
-                        {session.user?.name || session.user?.email}
-                    </p>
-                    <form
-                        action={async () => {
-                            "use server";
-                            await signOut({ redirectTo: "/" });
-                        }}
-                    >
-                        <button type="submit" className={styles.logoutBtn}>
-                            Sign Out
-                        </button>
-                    </form>
-                </div>
-            </aside>
-
+            <DashboardNav userName={session.user?.name || session.user?.email} />
             <main className={styles.main}>{children}</main>
         </div>
     );

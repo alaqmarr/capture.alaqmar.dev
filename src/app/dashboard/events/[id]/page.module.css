@@ -1,17 +1,18 @@
+/* Mobile-first: Base styles */
 .page {
-    max-width: 1200px;
+    width: 100%;
 }
 
 .header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .backLink {
     display: inline-block;
     color: var(--color-text-muted);
     text-decoration: none;
-    font-size: 0.875rem;
-    margin-bottom: 1rem;
+    font-size: 0.813rem;
+    margin-bottom: 0.75rem;
     transition: color 0.2s ease;
 }
 
@@ -21,20 +22,22 @@
 
 .headerContent {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .title {
-    font-size: 1.75rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-text-primary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    word-break: break-word;
 }
 
 .badges {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .liveBadge {
@@ -43,7 +46,7 @@
     color: white;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    font-size: 0.625rem;
+    font-size: 0.563rem;
     font-weight: 700;
 }
 
@@ -53,7 +56,7 @@
     color: #22c55e;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    font-size: 0.625rem;
+    font-size: 0.563rem;
     font-weight: 600;
 }
 
@@ -63,6 +66,39 @@
     color: #9ca3af;
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
-    font-size: 0.625rem;
+    font-size: 0.563rem;
     font-weight: 600;
+}
+
+/* Desktop (768px and up) */
+@media (min-width: 768px) {
+    .page {
+        max-width: 1200px;
+    }
+
+    .header {
+        margin-bottom: 2rem;
+    }
+
+    .backLink {
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+
+    .headerContent {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .title {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .liveBadge,
+    .publishedBadge,
+    .draftBadge {
+        font-size: 0.625rem;
+    }
 }

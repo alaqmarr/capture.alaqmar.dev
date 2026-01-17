@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Outfit } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { TopLoader } from "@/components/ui/TopLoader";
 
 export const preferredRegion = "sin1";
@@ -38,9 +36,7 @@ export default function RootLayout({
     <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
       <body>
         <TopLoader />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

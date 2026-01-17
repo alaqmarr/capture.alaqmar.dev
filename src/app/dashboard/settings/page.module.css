@@ -1,13 +1,14 @@
+/* Mobile-first: Base styles */
 .page {
-    max-width: 800px;
+    width: 100%;
 }
 
 .header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-text-primary);
     margin-bottom: 0.25rem;
@@ -15,18 +16,18 @@
 
 .subtitle {
     color: var(--color-text-muted);
-    font-size: 0.875rem;
+    font-size: 0.813rem;
 }
 
 .section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .sectionTitle {
     font-size: 1rem;
     font-weight: 600;
     color: var(--color-text-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .infoCard {
@@ -38,8 +39,9 @@
 
 .infoRow {
     display: flex;
-    justify-content: space-between;
-    padding: 1rem 1.25rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.875rem 1rem;
     border-bottom: 1px solid var(--color-border);
 }
 
@@ -48,7 +50,7 @@
 }
 
 .infoLabel {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     color: var(--color-text-muted);
 }
 
@@ -56,12 +58,13 @@
     font-size: 0.875rem;
     color: var(--color-text-primary);
     font-weight: 500;
+    word-break: break-all;
 }
 
 .linksGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
 }
 
 .linkCard {
@@ -81,4 +84,38 @@
 .linkCard:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
+}
+
+/* Desktop (768px and up) */
+@media (min-width: 768px) {
+    .page {
+        max-width: 800px;
+    }
+
+    .header {
+        margin-bottom: 2rem;
+    }
+
+    .title {
+        font-size: 1.75rem;
+    }
+
+    .section {
+        margin-bottom: 2rem;
+    }
+
+    .sectionTitle {
+        margin-bottom: 1rem;
+    }
+
+    .infoRow {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1rem 1.25rem;
+    }
+
+    .linksGrid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
 }
