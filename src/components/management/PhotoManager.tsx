@@ -325,7 +325,7 @@ export function PhotoManager({ eventId }: PhotoManagerProps) {
                         </div>
                         <Button
                             variant="secondary"
-                            onClick={() => setShowEditModal(true)}
+                            onClick={() => router.push(`/dashboard/events/${eventId}/edit`)}
                             className={styles.editBtn}
                         >
                             <EditIcon className={styles.editIcon} />

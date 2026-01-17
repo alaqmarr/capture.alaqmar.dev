@@ -26,6 +26,14 @@
     color: var(--color-text-primary);
 }
 
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    color: var(--color-text-muted);
+}
+
 .form {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -54,11 +62,6 @@
 .labelHint {
     font-size: 0.75rem;
     font-weight: 400;
-    color: var(--color-text-muted);
-}
-
-.hint {
-    font-size: 0.688rem;
     color: var(--color-text-muted);
 }
 
@@ -243,6 +246,7 @@
     }
 
     .radioOptions {
+        display: flex;
         gap: 1.5rem;
     }
 

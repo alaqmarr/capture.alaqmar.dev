@@ -10,7 +10,7 @@
     flex: 1;
     padding: 1rem;
     padding-top: 1rem;
-    padding-bottom: calc(5rem + env(safe-area-inset-bottom)); /* Space for bottom nav */
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom)); /* More space for bottom nav */
     min-height: 100vh;
 }
 

@@ -96,6 +96,11 @@ export async function PUT(request: NextRequest, { params }: Params) {
   }
 }
 
+// PATCH /api/events/[id] - Partial update event (alias for PUT)
+export async function PATCH(request: NextRequest, { params }: Params) {
+  return PUT(request, { params });
+}
+
 // DELETE /api/events/[id] - Delete event and all photos
 export async function DELETE(_request: NextRequest, { params }: Params) {
   try {

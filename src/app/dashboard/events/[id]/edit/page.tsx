@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import slugify from "slugify";
+import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
@@ -17,8 +16,22 @@ const STORAGE_PROVIDERS = [
     { value: "CLOUDFLARE_R2", label: "Cloudflare R2" },
 ];
 
-export default function NewEventPage() {
+interface Event {
+    id: string;
+    title: string;
+    description: string | null;
+    eventDate: string | null;
+    googleDriveUrl: string | null;
+    isPublished: boolean;
+    isLive: boolean;
+    storageProvider: string;
+    thumbnail: string | null;
+}
+
+export default function EditEventPage() {
     const router = useRouter();
+    const params = useParams();
+    const eventId = params.id as string;
     const thumbnailInputRef = useRef<HTMLInputElement>(null);
 
     const [form, setForm] = useState({
@@ -34,17 +47,50 @@ export default function NewEventPage() {
     const [thumbnail, setThumbnail] = useState<{
         file: File | null;
         preview: string | null;
+        existing: string | null;
         uploading: boolean;
         cropperSrc: string | null;
     }>({
         file: null,
         preview: null,
+        existing: null,
         uploading: false,
         cropperSrc: null,
     });
 
     const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        const fetchEvent = async () => {
+            try {
+                const res = await fetch(`/api/events/${eventId}`);
+                if (!res.ok) throw new Error("Event not found");
+                const event: Event = await res.json();
+
+                setForm({
+                    title: event.title,
+                    description: event.description || "",
+                    eventDate: event.eventDate ? event.eventDate.split("T")[0] : "",
+                    googleDriveUrl: event.googleDriveUrl || "",
+                    isPublished: event.isPublished,
+                    isLive: event.isLive,
+                    storageProvider: event.storageProvider,
+                });
+
+                if (event.thumbnail) {
+                    setThumbnail((t) => ({ ...t, existing: event.thumbnail }));
+                }
+            } catch {
+                setError("Failed to load event");
+            } finally {
+                setFetching(false);
+            }
+        };
+
+        fetchEvent();
+    }, [eventId]);
 
     const handleThumbnailSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -58,12 +104,11 @@ export default function NewEventPage() {
         const img = new Image();
         img.onload = () => {
             if (img.width < 800) {
-                setError(`Image too small. Minimum 800px wide required. Current: ${img.width}px`);
+                setError(`Image too small. Minimum 800px wide required.`);
                 URL.revokeObjectURL(img.src);
                 return;
             }
 
-            // Always open cropper so user can select area
             setError("");
             setThumbnail((t) => ({
                 ...t,
@@ -82,6 +127,7 @@ export default function NewEventPage() {
         setThumbnail({
             file: croppedFile,
             preview: URL.createObjectURL(croppedBlob),
+            existing: null,
             uploading: false,
             cropperSrc: null,
         });
@@ -101,6 +147,7 @@ export default function NewEventPage() {
         setThumbnail({
             file: null,
             preview: null,
+            existing: null,
             uploading: false,
             cropperSrc: null,
         });
@@ -116,7 +163,7 @@ export default function NewEventPage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    files: [{ filename: `thumbnail-${thumbnail.file.name}`, contentType: thumbnail.file.type }],
+                    files: [{ filename: `thumbnail-${Date.now()}.jpg`, contentType: thumbnail.file.type }],
                     storageProvider: "AWS_S3",
                 }),
             });
@@ -164,26 +211,34 @@ export default function NewEventPage() {
                 }
             }
 
-            const res = await fetch("/api/events", {
-                method: "POST",
+            const updateData: Record<string, unknown> = {
+                title: form.title.trim(),
+                description: form.description.trim() || null,
+                eventDate: form.eventDate || null,
+                googleDriveUrl: form.googleDriveUrl.trim() || null,
+                isPublished: form.isPublished,
+                isLive: form.isLive,
+                storageProvider: form.storageProvider,
+            };
+
+            // Only update thumbnail if a new one was uploaded or removed
+            if (thumbnailData) {
+                updateData.thumbnail = thumbnailData.url;
+                updateData.thumbnailKey = thumbnailData.key;
+            } else if (!thumbnail.existing && !thumbnail.preview) {
+                updateData.thumbnail = null;
+                updateData.thumbnailKey = null;
+            }
+
+            const res = await fetch(`/api/events/${eventId}`, {
+                method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    title: form.title.trim(),
-                    description: form.description.trim() || null,
-                    eventDate: form.eventDate || null,
-                    googleDriveUrl: form.googleDriveUrl.trim() || null,
-                    isPublished: form.isPublished,
-                    isLive: form.isLive,
-                    storageProvider: form.storageProvider,
-                    thumbnail: thumbnailData?.url || null,
-                    thumbnailKey: thumbnailData?.key || null,
-                }),
+                body: JSON.stringify(updateData),
             });
 
             if (!res.ok) throw new Error();
 
-            const savedEvent = await res.json();
-            router.push(`/dashboard/events/${savedEvent.id}`);
+            router.push(`/dashboard/events/${eventId}`);
         } catch {
             setError("Failed to save event");
         } finally {
@@ -191,13 +246,23 @@ export default function NewEventPage() {
         }
     };
 
+    if (fetching) {
+        return (
+            <div className={styles.page}>
+                <div className={styles.loading}>Loading...</div>
+            </div>
+        );
+    }
+
+    const currentThumbnail = thumbnail.preview || thumbnail.existing;
+
     return (
         <div className={styles.page}>
             <header className={styles.header}>
-                <a href="/dashboard/events" className={styles.backLink}>
-                    ← Back to Events
+                <a href={`/dashboard/events/${eventId}`} className={styles.backLink}>
+                    ← Back to Event
                 </a>
-                <h1 className={styles.title}>Create New Event</h1>
+                <h1 className={styles.title}>Edit Event</h1>
             </header>
 
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -221,9 +286,9 @@ export default function NewEventPage() {
                         <span className={styles.labelHint}>16:9 landscape, min 800px wide</span>
                     </label>
 
-                    {thumbnail.preview ? (
+                    {currentThumbnail ? (
                         <div className={styles.thumbnailPreview}>
-                            <img src={thumbnail.preview} alt="Thumbnail preview" />
+                            <img src={currentThumbnail} alt="Thumbnail preview" />
                             <button
                                 type="button"
                                 className={styles.thumbnailRemove}
@@ -342,7 +407,7 @@ export default function NewEventPage() {
                         Cancel
                     </Button>
                     <Button type="submit" loading={loading || thumbnail.uploading}>
-                        Create Event
+                        Save Changes
                     </Button>
                 </div>
             </form>

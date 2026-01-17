@@ -8,11 +8,13 @@
    ----------------------------------------------------------------------------- */
 :root {
   /* Colors - Dark Moody Palette with subtle warmth */
+  --color-bg: #0a0a0a;
   --color-bg-primary: #0c0c0c;
   --color-bg-secondary: #121214;
   --color-bg-tertiary: #1a1a1e;
   --color-bg-card: #151518;
   --color-bg-elevated: #1f1f1f;
+  --color-surface: #141416;
   
   --color-border: #2a2a2a;
   --color-border-subtle: #1e1e1e;
