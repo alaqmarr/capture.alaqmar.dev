@@ -17,7 +17,7 @@ async function getEvents() {
         const events = await db.event.findMany({
             where: { isPublished: true },
             include: { _count: { select: { photos: true } } },
-            orderBy: { createdAt: "desc" },
+            orderBy: { eventDate: "desc" },
         });
         return events;
     } catch {
